@@ -64,12 +64,12 @@ class MainMenuState extends MusicBeatState
 	];
 
 	var menuDescs:Array<String> = [       //wow, not language features? bruh
-	        'Play the story mode to unlock new characters, and understand the story!', // character selection could be used, idk
-		'Play any song as you wish and get new scores!, // yay, freeplay categories are here
-		'Look at the people who have worked for or contributed to the mod!', // leak or teaser?
-		'Listen to the songs of the mod.', // ost, bruh u can't even open ost, unless...
-		'Adjust game settings and keybinds.', // settings are just psych engine settings, i can probably remove and force every setting to be in game play or somethin
-		'Join the offical Recreation Edition discord!', // will be moldy's discord for later on, maybe? idkk
+	        'Play the story mode to unlock new characters, and understand the story!', //story mode
+		'Play any song as you wish and get new scores!', //freeplay
+		'Look at the people who have worked for or contributed to the mod!', //credits
+		'Listen to songs of the mod.', //ost
+		'Adjust game settings and keybinds.', //settings
+		'Join the official Recreation Edition discord!', //discord
 	];
 
 	var menuTitles:Array<String> = [
