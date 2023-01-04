@@ -64,7 +64,7 @@ class MainMenuState extends MusicBeatState
 	];
 
 	var menuDescs:Array<String> = [       //wow, not language features? bruh
-	    'Play the story mode to unlock new characters, and understand the story!', // character selection could be used, idk
+	        'Play the story mode to unlock new characters, and understand the story!', // character selection could be used, idk
 		'Play any song as you wish and get new scores!, // yay, freeplay categories are here
 		'Look at the people who have worked for or contributed to the mod!', // leak or teaser?
 		'Listen to the songs of the mod.', // ost, bruh u can't even open ost, unless...
