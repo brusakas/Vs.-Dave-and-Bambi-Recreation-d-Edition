@@ -264,7 +264,7 @@ class MainMenuState extends MusicBeatState
         	     }*/
 		     //menuItem.screenCenter(X);
 		     menuItem.x = 180*i+50;
-		     menuItem.y = FlxG.height - 230;
+		     menuItem.y = FlxG.height - 240;
 		     menuItems.add(menuItem);
 		     var scr:Float = (optionShit.length - 4) * 0.135;
 		     //if(optionShit.length < 6) scr = 0;
@@ -393,7 +393,7 @@ class MainMenuState extends MusicBeatState
 			if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'donate') {
-					CoolUtil.browserLoad('https://www.youtube.com/watch?v=dQw4w9WgXcQ'); // WHOEVER DELETES THIS IS GAY
+					CoolUtil.browserLoad('https://www.youtube.com/watch?v=dQw4w9WgXcQ'); // WHOEVER DELETES THIS IS NOT GAY
 				} else if (optionShit[curSelected] == 'discord') {
 					CoolUtil.browserLoad('https://discord.gg/uhT9pJ5Xd8'); // cool discord server
 				} else if (optionShit[curSelected] == customOption) {
