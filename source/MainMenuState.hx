@@ -8,6 +8,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.display.FlxBackdrop;
 import flixel.effects.FlxFlicker;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -25,7 +26,7 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.5.2h'; //This is also used for Discord RPC
+	public static var psychEngineVersion:String = '3.0b'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>; // menu items
@@ -97,13 +98,13 @@ class MainMenuState extends MusicBeatState
 		//#if ACHIEVEMENTS_ALLOWED 'awards', #end
 		'credits',
 		'ost', // why does things have to be lower case
-		//#if !switch 'donate', #end
-		'options'
+		'options',
+		'discord'
 	];
 
 	#if MODS_ALLOWED
 	var customOption:String;
-	var	customOptionLink:String;
+	var customOptionLink:String;
 	#end
 
 	var magenta:FlxSprite;
@@ -111,12 +112,13 @@ class MainMenuState extends MusicBeatState
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
 
-	override function create() // started 2:36pm
+	override function create() // stop 1st
 	{
 		WeekData.loadTheFirstEnabledMod();
 
 		#if desktop
 		// Updating Discord Rich Presence
+			
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 		debugKeys = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
@@ -124,6 +126,8 @@ class MainMenuState extends MusicBeatState
 		camGame = new FlxCamera();
 		camAchievement = new FlxCamera();
 		camAchievement.bgColor.alpha = 0;
+		
+		FlxG.mouse.visible = true;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camAchievement);
@@ -135,28 +139,94 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = persistentDraw = true;
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
-		bg.scrollFactor.set(0, yScroll);
-		bg.setGraphicSize(Std.int(bg.width * 1.175));
-		bg.updateHitbox();
-		bg.screenCenter();
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
-		add(bg);
+                var bg:FlxSprite = new FlxSprite(-80).loadGraphic(randomizeBG());
+		bg.color = 0x0066FF;
+                bg.scrollFactor.set(0, yScroll);
+                bg.setGraphicSize(Std.int(bg.width * 1.175));
+                bg.updateHitbox();
+                bg.screenCenter();
+                bg.antialiasing = ClientPrefs.globalAntialiasing;
+                add(bg);
+		
+		var checkeredBG:FlxBackdrop;
+		checkeredBG = new FlxBackdrop(Paths.image('checkeredBG'), #if (flixel < "5.0.0") 0.2, 0, true, true, #else XY, #end FlxG.random.int(-25, 5), FlxG.random.int(-25, 5));
+		checkeredBG.velocity.set(50, -25);
+		checkeredBG.updateHitbox();
+		checkeredBG.alpha = 0.4;
+		checkeredBG.screenCenter(X);
+		checkeredBG.color = 0xFFFFFF;
+		checkeredBG.antialiasing = ClientPrefs.globalAntialiasing;
+		add(checkeredBG);
+		
+		/*
+		var border:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenuBorder'));
+                border.scrollFactor.set(0, 0);
+                border.updateHitbox();
+                border.screenCenter();
+                border.antialiasing = ClientPrefs.globalAntialiasing;
+                add(border);
+		*/
+		
+		var selectBG:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/Select_Thing'));
+                selectBG.scrollFactor.set(0, 0);
+                selectBG.updateHitbox();
+                selectBG.screenCenter();
+                selectBG.antialiasing = ClientPrefs.globalAntialiasing;
+                add(selectBG);
+
+		menuIcon = new FlxSprite(-80).loadGraphic(Paths.image('mainmenu/menuicons/' + optionShit[curSelected].toLowerCase()));
+                menuIcon.scrollFactor.set(0, 0);
+		menuIcon.updateHitbox();
+                menuIcon.screenCenter(X);
+		menuIcon.y = FlxG.height/5 - 150;
+                add(menuIcon);
+
+		menuIconTitle = new FlxText((FlxG.width / 2) - 220, (FlxG.height / 2) + 30, 400, "", 50);
+		menuIconTitle.scrollFactor.set();
+		menuIconTitle.borderSize = 2;
+		menuIconTitle.setFormat(Paths.font("comic.ttf"), 50, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(menuIconTitle);
+
+		menuIconDesc = new FlxText((FlxG.width / 2) - 310, (FlxG.height / 2) - 60, 600, "", 25);
+		menuIconDesc.scrollFactor.set();
+		menuIconDesc.borderSize = 2;
+		menuIconDesc.setFormat(Paths.font("comic.ttf"), 25, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(menuIconDesc);
+        
+	/*
+        if(ClientPrefs.themedmainmenubg == true) {
+
+            var themedBg:FlxSprite = new FlxSprite(-80).loadGraphic(randomizeBG());
+            themedBg.scrollFactor.set(0, yScroll);
+            themedBg.setGraphicSize(Std.int(bg.width));
+            themedBg.updateHitbox();
+            themedBg.screenCenter();
+            themedBg.antialiasing = ClientPrefs.globalAntialiasing;
+            add(themedBg);
+
+            var hours:Int = Date.now().getHours();
+            if(hours > 18) {
+                themedBg.color = 0x545f8a; // 0x6939ff
+            } else if(hours > 8) {
+                themedBg.loadGraphic(randomizeBG());
+            }
+        }
+        */
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 		add(camFollowPos);
 
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.set(0, yScroll);
-		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
-		magenta.updateHitbox();
-		magenta.screenCenter();
-		magenta.visible = false;
-		magenta.antialiasing = ClientPrefs.globalAntialiasing;
-		magenta.color = 0xFFfd719b;
-		add(magenta);
+         	magenta = new FlxSprite(-80).loadGraphic('menuDesat');
+                magenta.scrollFactor.set(0, yScroll);
+                magenta.setGraphicSize(Std.int(magenta.width * 1.175));
+                magenta.updateHitbox();
+                magenta.screenCenter();
+                magenta.visible = false;
+                magenta.antialiasing = ClientPrefs.globalAntialiasing;
+                magenta.color = 0xFFfd719b;
+                add(magenta);
 		
 		// magenta.scrollFactor.set();
 
@@ -167,37 +237,53 @@ class MainMenuState extends MusicBeatState
 		/*if(optionShit.length > 6) {
 			scale = 6 / optionShit.length;
 		}*/
+		
+		var curoffset:Float = 100;
+		//#if MODS_ALLOWED -  udap = 100
+		//pushModMenuItemsToList(Paths.currentModDirectory);
+		//#end
 
 		for (i in 0...optionShit.length)
 		{
-			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 140)  + offset);
-			menuItem.scale.x = scale;
-			menuItem.scale.y = scale;
-			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-			menuItem.animation.play('idle');
-			menuItem.ID = i;
-			menuItem.screenCenter(X);
-			menuItems.add(menuItem);
-			var scr:Float = (optionShit.length - 4) * 0.135;
-			if(optionShit.length < 6) scr = 0;
-			menuItem.scrollFactor.set(0, scr);
-			menuItem.antialiasing = ClientPrefs.globalAntialiasing;
-			//menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
-			menuItem.updateHitbox();
+		     var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
+		     var menuItem:FlxSprite = new FlxSprite(curoffset, (i * 140) + offset);
+		     menuItem.scale.x = scale;
+		     menuItem.scale.y = scale;
+		     menuItem.frames = Paths.getSparrowAtlas('mainmenu/menubuttons/menu_' + optionShit[i]);
+		     menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+		     menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+		     menuItem.animation.play('idle');
+		     menuItem.ID = i;
+		     /*if(menuItem.ID <= 3) {
+			menuItem.x = 50*i+100;
+			menuItem.y = 200*i+100;
+		     } 
+		     if(menuItem.ID >= 3) {
+			menuItem.x = -50*(i-3)+800;
+			menuItem.y = 200*(i-3)+100;
+        	     }*/
+		     //menuItem.screenCenter(X);
+		     menuItem.x = 180*i+50;
+		     menuItem.y = FlxG.height - 230;
+		     menuItems.add(menuItem);
+		     var scr:Float = (optionShit.length - 4) * 0.135;
+		     //if(optionShit.length < 6) scr = 0;
+		     menuItem.scrollFactor.set(0, 0);
+		     menuItem.antialiasing = ClientPrefs.globalAntialiasing;
+		     //menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
+		     menuItem.updateHitbox();
+		     //curoffset = curoffset + 20;
 		}
-
+		/*
+		if (FlxG.sound.music == null) {
+			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+		}
+		*/
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Dave Engine v" + psychEngineVersion, 12);
 		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.setFormat("comic.ttf", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
@@ -219,6 +305,33 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 	}
+	
+	/*
+	#if MODS_ALLOWED
+	private var modsAdded:Array<String> = [];
+	function pushModMenuItemsToList(folder:String)
+	{
+	    if(modsAdded.contains(folder)) return;
+
+	    var menuitemsFile:String = null;
+	    if(folder != null && folder.trim().length > 0) menuitemsFile = Paths.mods(folder + '/data/menuitems.txt');
+	    else menuitemsFile = Paths.mods('data/menuitems.txt');
+
+	    if (FileSystem.exists(menuitemsFile))
+	    {
+		var firstarray:Array<String> = File.getContent(menuitemsFile).split('\n');
+		if (firstarray[0].length > 0) {
+		    var arr:Array<String> = firstarray[0].split('||');
+		    //if(arr.length == 1) arr.push(folder);
+		    optionShit.push(arr[0]);
+		    customOption = arr[0];
+          	    customOptionLink = arr[1];
+		}
+	    }
+	    modsAdded.push(folder);
+	}
+	#end
+        */
 
 	#if ACHIEVEMENTS_ALLOWED
 	// Unlocks "Freaky on a Friday Night" achievement
@@ -240,16 +353,31 @@ class MainMenuState extends MusicBeatState
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
-
+                
+		menuIconTitle.text = menuTitles[curSelected];
+		menuIconDesc.text = menuDescs[curSelected];
+		
 		if (!selectedSomethin)
 		{
-			if (controls.UI_UP_P)
+			/*if (controls.UI_UP_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
 			if (controls.UI_DOWN_P)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'));
+				changeItem(1);
+			}*/
+			
+			if (controls.UI_LEFT_P)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'));
+				changeItem(-1);
+			}
+
+			if (controls.UI_RIGHT_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
@@ -264,21 +392,25 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
-				if (optionShit[curSelected] == 'donate')
-				{
-					CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
+				if (optionShit[curSelected] == 'donate') {
+					CoolUtil.browserLoad('https://www.youtube.com/watch?v=dQw4w9WgXcQ'); // WHOEVER DELETES THIS IS GAY
+				} else if (optionShit[curSelected] == 'discord') {
+					CoolUtil.browserLoad('https://discord.gg/uhT9pJ5Xd8'); // cool discord server
+				} else if (optionShit[curSelected] == customOption) {
+					CoolUtil.browserLoad(customOptionLink);
 				}
 				else
 				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 
-					if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+					//if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 					menuItems.forEach(function(spr:FlxSprite)
 					{
 						if (curSelected != spr.ID)
-						{
+						{ 
+							/*
 							FlxTween.tween(spr, {alpha: 0}, 0.4, {
 								ease: FlxEase.quadOut,
 								onComplete: function(twn:FlxTween)
@@ -286,6 +418,10 @@ class MainMenuState extends MusicBeatState
 									spr.kill();
 								}
 							});
+                                                        */
+							//FlxTween.tween(spr, {y: 1000}, 2, {ease: FlxEase.backInOut, type: ONESHOT, onComplete: function(twn:FlxTween) {
+							//	spr.kill();
+							//}});
 						}
 						else
 						{
@@ -328,7 +464,7 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
-			spr.screenCenter(X);
+			//spr.screenCenter(X);
 		});
 	}
 
@@ -340,22 +476,33 @@ class MainMenuState extends MusicBeatState
 			curSelected = 0;
 		if (curSelected < 0)
 			curSelected = menuItems.length - 1;
+		
+		menuIcon.loadGraphic(Paths.image('mainmenu/menuicons/' + optionShit[curSelected].toLowerCase()));
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			spr.animation.play('idle');
-			spr.updateHitbox();
+			//spr.updateHitbox();
+			spr.scale.x = 0.6;
+			spr.scale.y = 0.6;
 
 			if (spr.ID == curSelected)
 			{
 				spr.animation.play('selected');
+				spr.scale.x = 0.6;
+				spr.scale.y = 0.6;
 				var add:Float = 0;
 				if(menuItems.length > 4) {
 					add = menuItems.length * 8;
 				}
-				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y - add);
-				spr.centerOffsets();
+				//camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y - add);
+				//spr.centerOffsets();
 			}
 		});
+	}
+        public static function randomizeBG():flixel.system.FlxAssets.FlxGraphicAsset
+	{
+		var chance:Int = FlxG.random.int(0, bgPaths.length - 1);
+		return Paths.image(bgPaths[chance]);
 	}
 }
