@@ -1,22 +1,33 @@
 {
-	"songs": [
-		["Pico", "pico", [148, 22, 83]],
-		["Philly Nice", "pico", [148, 22, 83]],
-		["Blammed", "pico", [148, 22, 83]]
+	"storyName": "The Finale",
+	"difficulties": "",
+	"weekBackground": "splitathon",
+	"hideFreeplay": false,
+	"freeplayColor": [
+		146,
+		113,
+		253
 	],
-
-	"weekCharacters": [
-		"pico",
-		"bf",
-		"gf"
-	],
-	"weekBackground": "philly",
-
-	"storyName": "PICO",
-	"weekBefore": "week2",
-	"weekName": "Week 3",
+	"weekBefore": "",
 	"startUnlocked": true,
-
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"songs": [
+		[
+			"Splitathon",
+			"face",
+			[
+				140,
+				140,
+				140
+			]
+		]
+	],
 	"hideStoryMode": false,
-	"hideFreeplay": false
+	"weekColor": "0x00ffff",
+	"hiddenUntilUnlocked": false,
+	"weekName": "The Finale"
 }

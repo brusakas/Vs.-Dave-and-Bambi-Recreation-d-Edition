@@ -1,22 +1,60 @@
 {
-	"songs": [
-		["Satin Panties", "mom", [252, 150, 215]],
-		["High", "mom", [252, 150, 215]],
-		["Milf", "mom", [252, 150, 215]]
+	"storyName": "Bambi's Corn Festival!",
+	"difficulties": "",
+	"weekBackground": "festival",
+	"hideFreeplay": false,
+	"freeplayColor": [
+		146,
+		113,
+		253
 	],
-	
-	"weekCharacters": [
-		"mom",
-		"bf",
-		"gf"
-	],
-	"weekBackground": "limo",
-
-	"storyName": "MOMMY MUST MURDER",
-	"weekBefore": "week3",
-	"weekName": "Week 4",
+	"weekBefore": "",
 	"startUnlocked": true,
-
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"songs": [
+		[
+			"Shredder",
+			"face",
+			[
+				140,
+				140,
+				140
+			]
+		],
+		[
+			"Greetings",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"Interdimensional",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"Rano",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		]
+	],
 	"hideStoryMode": false,
-	"hideFreeplay": false
+	"weekColor": "0x770077",
+	"hiddenUntilUnlocked": false,
+	"weekName": "Corn Festival"
 }

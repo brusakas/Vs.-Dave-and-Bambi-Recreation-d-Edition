@@ -1,22 +1,51 @@
 {
-	"songs": [
-		["Spookeez", "spooky", [34, 51, 68]],
-		["South", "spooky", [34, 51, 68]],
-		["Monster", "monster", [34, 51, 68]]
+	"storyName": "Mr. Bambi's Fun Corn Maze!",
+	"difficulties": "",
+	"weekBackground": "bamboi",
+	"hideFreeplay": false,
+	"weekBefore": "",
+	"freeplayColor": [
+		146,
+		113,
+		253
 	],
-
-	"weekCharacters": [
-		"spooky",
-		"bf",
-		"gf"
-	],
-	"weekBackground": "halloween",
-
-	"storyName": "Spooky Month",
-	"weekBefore": "week1",
-	"weekName": "Week 2",
 	"startUnlocked": true,
-
 	"hideStoryMode": false,
-	"hideFreeplay": false
+	"songs": [
+		[
+			"Blocked",
+			"face",
+			[
+				140,
+				140,
+				140
+			]
+		],
+		[
+			"Corn Theft",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"Maze",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		]
+	],
+	"weekCharacters": [
+		"",
+		"",
+		""
+	],
+	"weekName": "Vs Bambi",
+	"hiddenUntilUnlocked": false,
+	"weekColor": "0x00b515"
 }

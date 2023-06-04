@@ -1,22 +1,69 @@
 {
 	"songs": [
-		["Senpai", "senpai-pixel", [255, 120, 191]],
-		["Roses", "senpai-pixel", [255, 120, 191]],
-		["Thorns", "spirit-pixel", [255, 120, 191]]
+		[
+			"Blu",
+			"face",
+			[
+				140,
+				140,
+				140
+			]
+		],
+		[
+			"Anillo",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"Remorseless",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"Overdrive",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"Amber",
+			"dad",
+			[
+				146,
+				113,
+				253
+			]
+		]
 	],
-
+	"weekColor": "0x0099FF",
+	"hiddenUntilUnlocked": false,
+	"hideFreeplay": false,
+	"weekBackground": "insanity",
+	"difficulties": "",
 	"weekCharacters": [
-		"senpai",
-		"bf",
-		"gf"
+		"",
+		"",
+		""
 	],
-	"weekBackground": "school",
-
-	"storyName": "hating simulator ft. moawling",
-	"weekBefore": "week5",
-	"weekName": "Week 6",
-	"startUnlocked": true,
-
+	"storyName": "this is not finished!",
+	"weekName": "Insanity",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
 	"hideStoryMode": false,
-	"hideFreeplay": false
+	"weekBefore": "",
+	"startUnlocked": true
 }
